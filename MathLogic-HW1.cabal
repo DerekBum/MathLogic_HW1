@@ -40,3 +40,4 @@ Test-Suite test
     main-is:    test.hs
     build-depends: base
     hs-source-dirs:   app
+    other-modules: Convert, Checker
