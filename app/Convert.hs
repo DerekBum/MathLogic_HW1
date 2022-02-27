@@ -26,12 +26,14 @@ convToNNF (Cond e1 e2) = convToNNF (Neg e1) `Disj` convToNNF e2                 
 convToNNF (Bicond e1 e2) = Disj (convToNNF (Neg e1) `Conj` convToNNF (Neg e2)) (convToNNF e1 `Conj` convToNNF e2)  --biconditional
 convToNNF e@(Var _) = e
 convToNNF e@(Neg (Var _)) = e
+convToNNF (Conj e1 e2) = convToNNF e1 `Conj` convToNNF e2
+convToNNF (Disj e1 e2) = convToNNF e1 `Disj` convToNNF e2
 convToNNF (Neg e@(Cond _ _)) = convToNNF (Neg (convToNNF e))
 convToNNF (Neg e@(Bicond _ _)) = convToNNF (Neg (convToNNF e))
 
 ruleD :: Expr -> Expr -> Expr
-ruleD e1 (Disj e2 e3) = (e1 `Conj` e2) `Disj` (e1 `Conj` e3)
-ruleD (Disj e1 e2) e3 = (e1 `Conj` e3) `Disj` (e2 `Conj` e3)
+ruleD e1 (Disj e2 e3) = (ruleD e1 e2) `Disj` (ruleD e1 e3)
+ruleD (Disj e1 e2) e3 = (ruleD e1 e3) `Disj` (ruleD e2 e3)
 ruleD e1 e2 = e1 `Conj` e2
 
 convToDNF :: Expr -> Expr
@@ -41,8 +43,8 @@ convToDNF = helperDNF . convToNNF
           helperDNF e = e
 
 ruleC :: Expr -> Expr -> Expr
-ruleC e1 (Conj e2 e3) = (e1 `Disj` e2) `Conj` (e1 `Disj` e3)
-ruleC (Conj e1 e2) e3 = (e1 `Disj` e3) `Conj` (e2 `Disj` e3)
+ruleC e1 (Conj e2 e3) = (ruleC e1 e2) `Conj` (ruleC e1 e3)
+ruleC (Conj e1 e2) e3 = (ruleC e1 e3) `Conj` (ruleC e2 e3)
 ruleC e1 e2 = e1 `Disj` e2
 
 convToCNF :: Expr -> Expr
