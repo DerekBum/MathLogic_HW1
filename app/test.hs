@@ -7,10 +7,10 @@ import Checker
 import System.Exit (exitFailure)
 
 main = do
-    let a = Var "A"
-    let b = Var "B"
-    let c = Var "C"
-    let d = Var "D"
+    let a = Var $ Symb "A"
+    let b = Var $ Symb "B"
+    let c = Var $ Symb "C"
+    let d = Var $ Symb "D"
     let g = Disj (Conj a (Cond (Disj (Neg b) c) (Neg c))) d
     let gNNF = checkNNF $ convToNNF g
     let gDNF = checkDNF $ convToDNF g

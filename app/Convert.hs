@@ -1,6 +1,7 @@
 module Convert where
 
-type Symb = String
+newtype Symb = Symb String
+    deriving (Show, Eq)
 
 data Expr = Var Symb
           | Neg Expr
@@ -19,7 +20,7 @@ instance Show Expr where
     show (Bicond e1 e2) = '(' : show e1 ++ " <-> " ++ show e2 ++ ")"
 
 convToNNF :: Expr -> Expr
-convToNNF (Neg (Neg e)) = e                                                                                        --double negation
+convToNNF (Neg (Neg e)) = convToNNF e                                                                              --double negation
 convToNNF (Neg (Conj e1 e2)) = convToNNF (Neg e1) `Disj` convToNNF (Neg e2)                                        --De Morgan 1
 convToNNF (Neg (Disj e1 e2)) = convToNNF (Neg e1) `Conj`  convToNNF (Neg e2)                                       --De Morgan 2
 convToNNF (Cond e1 e2) = convToNNF (Neg e1) `Disj` convToNNF e2                                                    --conditional

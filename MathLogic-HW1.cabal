@@ -41,3 +41,10 @@ Test-Suite test
     build-depends: base
     hs-source-dirs:   app
     other-modules: Convert, Checker
+
+Test-Suite randomTest
+    type:       exitcode-stdio-1.0
+    main-is:    randomTest.hs
+    build-depends: base, QuickCheck
+    hs-source-dirs:   app
+    other-modules: Convert, Checker
