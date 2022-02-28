@@ -1,7 +1,10 @@
 module Convert where
 
 newtype Symb = Symb String
-    deriving (Show, Eq)
+    deriving (Eq, Read)
+
+instance Show Symb where
+    show (Symb s) = show s
 
 data Expr = Var Symb
           | Neg Expr
@@ -9,7 +12,7 @@ data Expr = Var Symb
           | Disj Expr Expr
           | Cond Expr Expr
           | Bicond Expr Expr
-          deriving Eq
+          deriving (Eq, Read)
 
 instance Show Expr where
     show (Var v) = show v

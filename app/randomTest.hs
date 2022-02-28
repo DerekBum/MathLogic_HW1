@@ -32,8 +32,8 @@ randomOther e1 e2 = oneof [(insertGen e1 e2 Conj), (insertGen e1 e2 Disj), (inse
     where insertGen e1 e2 op = liftM2 op e1 e2
 
 main = do
-    quickCheck (checkNNF . convToNNF)
-    quickCheck (checkDNF . convToDNF)
-    quickCheck (checkCNF . convToCNF)
+    quickCheck (withMaxSuccess 10000 $ checkNNF . convToNNF)
+    quickCheck (withMaxSuccess 10000 $ checkDNF . convToDNF)
+    quickCheck (withMaxSuccess 10000 $ checkCNF . convToCNF)
 
     
